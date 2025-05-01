@@ -1,6 +1,3 @@
-from ast import And
-
-
 input_data="""
 16 18 20 22 23 22
 9 10 12 13 13
@@ -1003,8 +1000,6 @@ input_data="""
 31 33 34 37 38
 87 85 83 82 79
 """
-
-# read in the data. Seperated by per line and read in as a list.
 list1=[]
 
 
@@ -1022,6 +1017,7 @@ for sublist in list1:
     #every sublist, use a flag to see if the conditions were met or not
     ascending=True
     descending=True
+    is_safe = False
 #iterate through each sublist
     for j in range(len(sublist)-1):
         print("sublist", sublist)
@@ -1039,21 +1035,41 @@ for sublist in list1:
 
     
     if ascending or descending:
-        print(sublist,"safe+1",safe)
-        safe += 1
-        print(safe)
+        # print(sublist,"safe+1",safe)
+        is_safe=True
         
+    # if is_safe is false, try remove one element at a time   
+    else:
+        print("unsafe",sublist)
+        for skip in range(len(sublist)):
+            #temp list removing one int at a time
+            temp=sublist[:skip]+sublist[skip+1:]
+            ascending=True
+            descending=True
+            is_safe = False
+        #iterate through each sublist
+            for j in range(len(temp)-1):
+                print("temp", temp)
+
+                current=temp[j]
+                next=temp[j+1]
+                diff=next-current
+                #print(current,next)
+                if not (current < next and 1 <= diff <= 3):
+                    ascending=False
+                    
+                if not (current > next and 1 <= -diff <= 3):
+                    descending=False
+                
+            if ascending or descending:
+                # print(sublist,"safe+1",safe)
+                is_safe=True
+                break #Stop trying other removals once one works!
+
+    if is_safe:
+        print(f"{sublist} is SAFE")
+        safe += 1
+    else:
+        print("U/nsafe")
 
 print(safe)
-
-
-
-
-
-
-# if i < i+1 and 1=< i+1-i =< 3 -> next element, else, exit. if it iterate through the whole list safe ++
-# if i > i+1 and 1=< i-i+1 =< 3 -> next element, else exit. if it iterate through the whole list safe ++
-
-
-
-
